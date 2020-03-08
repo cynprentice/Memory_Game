@@ -83,34 +83,42 @@ game.start();
 
 
 function flipCard() {
+    if (game.lockBoard) {
+        return;
+    }
+    game.lockboard = true;
     let cardType = this.getAttribute("data-card");
     console.log("flipping card " + cardType);
     this.classList.toggle('flip');
 
     if (game.card1 == null) {
         game.card1 = this;
+        game.card1.removeEventListener('click', flipCard);
         console.log('card1 data is ' + game.card1.getAttribute("data-card"));
     } else {
         game.card2 = this;
+        game.card2.removeEventListener('click', flipCard);
         console.log('card2 data is ' + game.card2.getAttribute("data-card"));
         game.checkForCardMatch();
 
     }
+    game.lockboard = false;
 }
 
 
 //pause briefly before turning cards back over
 function flipBackCards() {
-
-    lockBoard = true;
+    game.lockBoard = true;
     setTimeout(function () {
         game.card1.classList.remove('flip');
+        game.card1.addEventListener('click', flipCard);
         game.card1 = null;
-        lockBoard = false;
+       game.lockBoard = false;
     }, 1500);
 
     setTimeout(function () {
         game.card2.classList.remove('flip');
+        game.card2.addEventListener('click', flipCard);
         game.card2 = null;
   
     }, 1000);

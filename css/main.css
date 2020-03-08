@@ -88,7 +88,7 @@ body {
 
     background-color: rgb(0, 0, 0, .2);
     width: 100px;
-    height: 125px;
+    height: 100px;
     margin: .2rem;
     border: 2px solid var(--m-cream);
     border-radius: 5px;
@@ -131,8 +131,6 @@ body {
     backface-visibility: hidden;
 
 }
-
-
 
 .card-back:hover,
 .card-front:hover {
