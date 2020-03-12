@@ -49,6 +49,11 @@
     text-align: center;
 }
 
+
+.center{
+    margin: auto;
+    width: 100%;
+}
 html {
     background-color: var(--m-black);
 }
@@ -60,36 +65,31 @@ body {
 }
 
 
-.container {
-    display: flex;
-}
 
-#start-buttons {
-    display:flex;
-}
 
 .start-btn {
     margin: 10px;
 }
 
+
+
 #gameBoard {
     background-color: var(--m-green);
-    width: 90%;
+    width: 100%;
     border-radius: 5px;
-    display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
     align-items: center;
-    margin: 0 0 3em;
+    
     perspective: 1000px;
 }
 
 .card {
 
     background-color: rgb(0, 0, 0, .2);
-    width: 100px;
+    width: 95px;
     height: 100px;
-    margin: .2rem;
+    margin: .3rem .1rem;
     border: 2px solid var(--m-cream);
     border-radius: 5px;
     cursor: pointer;
@@ -152,31 +152,12 @@ body {
 
 .btn {
     background-color: var(--m-pink);
-    border-color: var(--m-pink);
+    
 }
 
-.dropdown-icon {
-    background: var(--m-black);
-    color: var(--blue);
+.btn-block {
     width: 90%;
-    min-width: 25px;
-    height: 90%;
-    min-height: 25px;
-    margin: 5px;
-    padding: 5px;
-    display: inline-block;
-    font-size: 2rem;
-    cursor: pointer;
-
 }
-
-
-.dropdown-icon:hover,
-.player-icon:hover {
-    color: var(--m-pink);
-}
-
-
 
 #win-screen {
     display: none;

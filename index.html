@@ -17,7 +17,7 @@
     <!-- font awesome for icons -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
         integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
 
     <!-- custom game styles -->
     <link rel="stylesheet" href="css/main.css">
@@ -31,32 +31,62 @@
 
     <!-- container for instructions and start button-->
     <div class="container">
-
         <div id="start-prompt">
-            <h2 class="m-black center">Ready to play?</h2>
-            <div id="start-buttons">
-                <button id="start-easy-button" class="start-btn btn btn-primary btn-block">Start Easy Game</button>
-                <button id="start-medium-button" class="start-btn btn btn-primary btn-block">Start Medium Game</button>
-                <button id="start-hard-button" class="start-btn btn btn-primary btn-block">Start Hard Game</button>
-            </div>
+            <div id="start-buttons" class="row">
+                <div class="col-6">
+                    <button id="start-easy-button" class="start-btn btn btn-primary btn-block">Start Easy Game</button>
+                </div>
 
+                <div class="col-6">
+                    <button id="start-hard-button" class="start-btn btn btn-primary btn-block">Start Hard Game</button>
+                </div>
+            </div>
             <div id="results" class="row">
-                <div class="col-4 center">
-                    <p># turns:</p>
-                </div>
-                <div class="col-2">
-                    <p id=turn-count>0</p>
-                </div>
-                <div class="col-6 center">
-                    <p>completion time: 0</p>
+                <div class="col-12">
+                    <p># turns: <span id=turn-count>0</span></p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Container for gameboard -->
+
+    <!-- container for game board table-->
     <div class="container">
         <div id="gameBoard">
+            <div class="row">
+                <div class="col-3"><i class="fas fa-heart card"></i></div>
+                <div class="col-3"><i class="fas fa-star card"></i></div>
+                <div class="col-3"><i class="fas fa-heart card"></i></div>
+                <div class="col-3"><i class="fas fa-heart card"></i></div>
+            </div>
+            <div class="row">
+                <div class="col-3"><i class="fas fa-dog card"></i></div>
+                <div class="col-3"><i class="fas fa-cat card"></i></div>
+                <div class="col-3"><i class="fas fa-cat card"></i></div>
+                <div class="col-3"><i class="fas fa-dog card"></i></div>
+            </div>
+            <div class="row">
+                <div class="col-3"><i class="fas fa-heart card"></i></div>
+                <div class="col-3"><i class="fas fa-star card"></i></div>
+                <div class="col-3"><i class="fas fa-heart card"></i></div>
+                <div class="col-3"><i class="fas fa-heart card"></i></div>
+            </div>
+            <div class="row">
+                <div class="col-3"><i class="fas fa-heart card"></i></div>
+                <div class="col-3"><i class="fas fa-star card"></i></div>
+                <div class="col-3"><i class="fas fa-heart card"></i></div>
+                <div class="col-3"><i class="fas fa-heart card"></i></div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+
+    <!-- Container for gameboard flex
+    <div class="container">
+        <div id="gameBoard">
+
             <div class="card">
                 <i class="fas fa-heart  card-front"></i>
                 <i class="fas fa-question  card-back"></i>
@@ -72,7 +102,8 @@
                 <i class="fas fa-question  card-back"></i>
             </div>
 
-            <div class="card">
+            <div class
+            ="card">
                 <i class="fas fa-star  card-front"></i>
                 <i class="fas fa-question  card-back"></i>
             </div>
@@ -94,14 +125,14 @@
                 <i class="fas fa-question  card-back"></i>
             </div>
         </div>
-
-        <div id="win-screen">
-            <div class="win-container">
+    -->
+    <div id="win-screen">
+        <div class="win-container">
             <i class="win-icon fas fa-gift"></i>
-              <h2>You Won! Yippee!!</h2>
-            
-            </div>
-          </div>
+            <h2>You Won in <span id=final-turn-count>0</span> moves! Yippee!!</h2>
+
+        </div>
+    </div>
 
     </div>
 
