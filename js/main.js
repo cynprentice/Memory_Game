@@ -21,7 +21,7 @@ const hard = 36;
 class MemoryGame {
     constructor(deckSize) {
         this.deckSize = deckSize;
-        this.deck = getDeck(deckSize);
+        this.deck = getCardIcons(deckSize);
         this.moveCount = 0;
         this.card1 = null;
         this.card2 = null;
@@ -32,15 +32,66 @@ class MemoryGame {
         this.gameLength = 0;
     }
 
-    start() {
-        dealGame(this.deck);
+    /* WATS3020: Look at all the DOM traversal in this function! */
+    // deal all cards in the deck face down
 
+    dealGame() {
+        console.log("dealing game");
+        //clear game board
+        this.moveCount = 0;
+        document.querySelector('#turn-count').innerHTML = this.moveCount;
+        let gameBoard = document.getElementById('gameBoard');
+        gameBoard.innerHTML = '';
+        //make game board wider for large decks
+        if (this.deckSize>16) {
+            gameBoard.style.maxWidth = '800px';
+        } else {
+            gameBoard.style.maxWidth = '625px';
+        }
+        let memoryDeck = shuffleCards(this.deck);
+        let numRowsCols = Math.sqrt(this.deckSize);
+        let cardCount = 0;
+        let columnSpan = 12 / numRowsCols;
+        console.log("dealing game with " + this.deckSize + " card deck. " + numRowsCols + "square board");
+
+        //create game rows
+        for (let i = 0; i < numRowsCols; i++) {
+            let row = document.createElement("div")
+            row.setAttribute("class", "row");
+
+            //create game column
+            for (let j = 0; j < numRowsCols; j++) {
+                let column = document.createElement("div");
+                column.setAttribute("class", `col-${columnSpan}`);
+
+                //create flippable memory cards
+                let memoryCard = document.createElement("div");
+                memoryCard.setAttribute("class", "card");
+                memoryCard.setAttribute("data-card", memoryDeck[cardCount]);
+               
+                let cardFront = document.createElement('i');
+                cardFront.setAttribute("class", `fas fa-${memoryDeck[cardCount]} card-front`);
+                memoryCard.appendChild(cardFront);
+
+                let cardBack = document.createElement('i');
+                cardBack.setAttribute("class", `fas fa-question card-back`);
+                memoryCard.appendChild(cardBack);
+                memoryCard.addEventListener('click', flipCard);
+
+                column.appendChild(memoryCard);
+                row.appendChild(column);
+                cardCount += 1;
+            }
+            gameBoard.appendChild(row);
+        }
     }
+
     checkForCardMatch() {
         this.moveCount++;
         /* WATS3020: Look at the string manipulation! */
         document.querySelector('#turn-count').innerHTML = this.moveCount;
         console.log(this.card1.getAttribute("data-card") + " matching against " + this.card2.getAttribute("data-card"));
+
         /* WATS3020: Look it's a conditional statement! */
         if (this.card1.getAttribute("data-card") == this.card2.getAttribute("data-card")) {
             //lock cards if they match
@@ -89,7 +140,7 @@ class MemoryGame {
 }
 
 var game = new MemoryGame(easy);
-game.start();
+game.dealGame();
 
 
 /* WATS3020: Look at all the functions below! */
@@ -102,6 +153,8 @@ function flipCard() {
     let cardType = this.getAttribute("data-card");
     console.log("flipping card " + cardType);
     this.classList.toggle('flip');
+    // rotate card back on x axis because backface-visibility doesn't work in FireFox;
+    this.childNodes[1].style.transform = 'rotateX(0deg)';
 
     /* WATS3020: Look it's a conditional statement! */
     if (game.card1 == null) {
@@ -127,119 +180,50 @@ function flipBackCards() {
         game.card1.addEventListener('click', flipCard);
         game.card1 = null;
         game.lockBoard = false;
-    }, 1500);
+    }, 1300);
 
     setTimeout(function () {
         game.card2.classList.remove('flip');
         game.card2.addEventListener('click', flipCard);
         game.card2 = null;
 
-    }, 1000);
+    }, 800);
 
 }
 
 //Creates an array of memory card icons
-function getDeck(deckSize) {
+function getCardIcons(deckSize) {
     console.log("getting deck of size" + deckSize);
-    var deck = new Array();
+    let iconDeck = new Array();
 
     for (let i = 0; i < deckSize / 2; i++) {
-        deck.push(cardIcons[i]);
-        deck.push(cardIcons[i]);
+        iconDeck.push(cardIcons[i]);
+        iconDeck.push(cardIcons[i]);
     }
-    return deck;
+    return iconDeck;
 }
 
-//randomizes the items in a deck array
+//randomizes the items in an array of card icons
 function shuffleCards(deck) {
     //use Fisher-Yates (aka Knuth) Shuffle
     let currentIndex = deck.length,
         temporaryValue, randomIndex;
-
     // While there remain elements to shuffle...
     while (0 !== currentIndex) {
-
         // Pick a remaining element...
         randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex -= 1;
         // And swap it with the current element.
         temporaryValue = deck[currentIndex];
-
         deck[currentIndex] = deck[randomIndex];
         deck[randomIndex] = temporaryValue;
     }
-
-    console.log("shuffled cards " + deck);
     return deck;
 
 }
 
 
-/* WATS3020: Look at all the DOM traversal in this function! */
-// deal all cards in the deck face down
-function dealGame(deck) {
-    console.log("dealing game");
-    //clear game board
-    game.moveCount=0;
-    document.querySelector('#turn-count').innerHTML = game.moveCount;
-    gameBoard = document.getElementById('gameBoard');
-    gameBoard.innerHTML = '';
-    let memoryDeck = shuffleCards(deck);
-    let numRowsCols = Math.sqrt(game.deckSize);
-    let cardCount = 0;
-let columnSpan = 12/numRowsCols;
-console.log ("dealing game with " + game.deckSize + " card deck. " + numRowsCols + "square board");
-    for (let i = 0; i < numRowsCols; i++) {
-        let row = document.createElement("div")
-        row.setAttribute("class", "row");
-        for (let j = 0; j < numRowsCols; j++) {
-            let column = document.createElement("div");
-            column.setAttribute("class", `col-${columnSpan}`);
-
-            let memoryCard = document.createElement("div");
-            memoryCard.setAttribute("class", "card");
-            memoryCard.setAttribute("data-card", memoryDeck[cardCount]);
-
-            let cardFront = document.createElement('i');
-            cardFront.setAttribute("class", `fas fa-${memoryDeck[cardCount]} card-front`);
-            memoryCard.appendChild(cardFront);
-            let cardBack = document.createElement('i');
-            cardBack.setAttribute("class", `fas fa-question card-back`);
-            memoryCard.appendChild(cardBack);
-            memoryCard.addEventListener('click', flipCard);
-            column.appendChild(memoryCard);
-            row.appendChild(column);
-            cardCount+=1;
-        }
-        gameBoard.appendChild(row);
-         }
-
-}
-
-    //Create flipable memory cards for each card in the deck
-    /*
-    for (let i = 0; i < memoryDeck.length; i++) {
-
-        console.log("created card " + memoryDeck[i]);
-        let memoryCard = document.createElement("div");
-        memoryCard.setAttribute("class", "card");
-        memoryCard.setAttribute("data-card", memoryDeck[i]);
-
-        let cardFront = document.createElement('i');
-        cardFront.setAttribute("class", `fas fa-${memoryDeck[i]} card-front`);
-        memoryCard.appendChild(cardFront);
-        let cardBack = document.createElement('i');
-        cardBack.setAttribute("class", `fas fa-question card-back`);
-        memoryCard.appendChild(cardBack);
-        memoryCard.addEventListener('click', flipCard);
-        gameBoard.appendChild(memoryCard);
-    }
-    */
-
-
-
-
-/* WATS3020: Look it's an event listener! */
+/* WATS3020: Look here are 3 event listeners! */
 
 document.addEventListener('DOMContentLoaded', function (event) {
 
@@ -249,23 +233,18 @@ document.addEventListener('DOMContentLoaded', function (event) {
     startEasyButton.addEventListener("click", function (e) {
         console.log("creating new Easy Game")
         game = new MemoryGame(easy);
-        game.start();
+        game.dealGame();
 
     });
 
 
-
-
     let startHardButton = document.querySelector('#start-hard-button');
 
-
-
-    /* WATS3020: Look it's an event listener! */
     // Listens for a "click" event and executes an anonymous function to start the game.
     startHardButton.addEventListener("click", function (e) {
         console.log("creating new Hard Game")
         game = new MemoryGame(hard);
-        game.start();
+        game.dealGame();
 
     });
 
